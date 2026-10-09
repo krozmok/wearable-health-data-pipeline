@@ -1,0 +1,260 @@
+Project pmdata_synthetic {
+    Note: '''
+    PMData Synthetic Dataset
+    Study window: 2026-01-08 -> 2026-02-04 (28 days)
+    Participants: 50 (P001-P050)
+    Devices: Fitbit wristband (per-minute step resolution, nightly sleep staging)
+    Study local timezone: UTC-05:00
+    '''
+}
+
+Table participants {
+    participant_id string [pk, note: 'Unique participant identifier (`P001`-`P050`)']
+    device_id string [unique, note: 'Fitbit device serial number (`FBT-NNNN-XXXXXXXX`)']
+    age integer [note: 'Age in years at study enrolment']
+    height_cm integer [note: 'Height in centimetres']
+    gender string [note: '`male` or `female`']
+    chronotype string [note: 'Sleep chronotype: `A` = morning type, `B` = evening type']
+    max_heart_rate integer [note: 'Estimated maximum heart rate (bpm); derived as 220 - age + individual offset']
+
+    Note: 'data/participants/participants.csv - one row per participant enrolled in the study'
+}
+
+Table device_metadata {
+    participant_id string [ref: - participants.participant_id, note: 'Foreign key -> participants.csv']
+    device_id string [pk, ref: - participants.device_id, note: 'Foreign key -> participants.csv; matches device serial']
+    wear_site string [note: 'Wrist placement: `wrist_dominant` or `wrist_nondominant`']
+    calibration_date date [note: 'Date the device was calibrated before deployment (ISO 8601)']
+    firmware_version string [note: 'Firmware version string installed at calibration (e.g. `2.2.1`); may be blank']
+    device_label string [note: 'Free-text device description, e.g. `Fitbit Charge 5 · fw2.2.1 · SN:FBT-0001-9D79801C`. Always carries the true firmware version, including for rows where `firmware_version` is blank, but it has to be regex-parsed out']
+
+    Note: 'data/health_summaries/device_metadata.csv - one row per device, describing calibration context'
+}
+
+Table wellness_survey {
+    participant_id string [ref: > participants.participant_id, note: 'Foreign key -> participants.csv']
+    date date [note: 'Date survey was submitted (ISO 8601)']
+    fatigue_score integer [note: 'Perceived fatigue level (1 = exhausted, 5 = fully rested)']
+    stress_score integer [note: 'Perceived stress level (1 = highly stressed, 5 = no stress)']
+    readiness_score integer [note: 'Readiness to train (0 = not ready, 10 = peak readiness)']
+    sleep_quality_score integer [note: 'Subjective sleep quality (1 = very poor, 5 = excellent)']
+
+    indexes {
+        (participant_id, date) [pk]
+    }
+
+    Note: 'data/health_summaries/wellness_survey.csv - daily self-reported wellness scores collected each morning via in-app survey'
+}
+
+Table sleep {
+    participant_id string [ref: > participants.participant_id, note: 'Matches participants.csv']
+    date string [note: 'Wake-up date as a date string (session spans the night before `date`)']
+    sleep_onset string [note: 'Timestamp when the participant fell asleep (ISO 8601 + `.000`)']
+    sleep_end string [note: 'Timestamp when the participant woke up (ISO 8601 + `.000`)']
+    efficiency_pct float [note: 'Session-level sleep efficiency']
+    restlessness float [note: 'Session-level restlessness index (0-1)']
+    stages json [note: 'Nested array of stage objects: `[{ stage, start_time, end_time, duration_min }, ...]`. Flattened into sleep_stages']
+
+    indexes {
+        (participant_id, date) [pk]
+    }
+
+    Note: '''
+    data/wearable_events/{participant_id}/sleep.json as it is on disk - one object per night
+    with the stages kept as a nested array. One file per participant; 28 entries per file.
+    Flattened into sleep_sessions (session-level fields) and sleep_stages (one row per stage).
+    '''
+}
+
+Table sleep_sessions {
+    participant_id string [ref: > participants.participant_id, note: 'Matches participants.csv']
+    date date [note: 'Wake-up date (session spans the night before `date`)']
+    sleep_onset timestamp [note: 'Timestamp when the participant fell asleep (ISO 8601 + `.000`)']
+    sleep_end timestamp [note: 'Timestamp when the participant woke up (ISO 8601 + `.000`)']
+    efficiency_pct float [note: 'Session-level sleep efficiency']
+    restlessness float [note: 'Session-level restlessness index (0-1)']
+
+    indexes {
+        (participant_id, date) [pk]
+    }
+
+    Note: '''
+    data/wearable_events/{participant_id}/sleep.json - array of nightly sleep session objects.
+    One file per participant; 28 entries per file (one per study night).
+    Derived metrics (`total_sleep_min`, `deep_sleep_pct`, `sleep_efficiency_pct`) must be computed
+    from the stages array; there is no pre-computed summary CSV.
+    '''
+}
+
+Table sleep_stages {
+    participant_id string [note: 'Inherited from the parent sleep session']
+    date date [note: 'Inherited from the parent sleep session']
+    stage string [note: '`light`, `deep`, `rem`, or `awake`']
+    start_time timestamp [note: 'Stage start (ISO 8601 + `.000`)']
+    end_time timestamp [note: 'Stage end (= start_time of the next stage)']
+    duration_min integer [note: 'Stage duration in minutes (should equal `end_time - start_time` in whole minutes)']
+
+    indexes {
+        (participant_id, date, start_time) [pk]
+    }
+
+    Note: '''
+    Nested `stages[]` array of each sleep.json session.
+    Stage order within every session: light -> deep -> rem -> light -> awake.
+    '''
+}
+
+Table steps {
+    participant_id string [ref: > participants.participant_id, note: 'Matches participants.csv']
+    timestamp timestamp [note: 'Minute-boundary timestamp for this record (ISO 8601, no ms; seconds = `00`)']
+    steps integer [note: 'Step count recorded during this minute. Expected 0-30 steps/minute at rest through moderate activity; burst windows may reach higher values']
+
+    indexes {
+        (participant_id, timestamp) [pk]
+    }
+
+    Note: '''
+    data/wearable_events/{participant_id}/steps.json - array of per-minute step-count records.
+    One file per participant; 28 days x 1440 minutes = 40320 records per file (nominal).
+    '''
+}
+
+Table heart_rate {
+    participant_id string [ref: > participants.participant_id, note: 'Matches participants.csv']
+    timestamp timestamp [note: 'Minute-boundary timestamp for this record (ISO 8601, no ms). Almost always naive local time (UTC-05:00), matching steps.json, but a device can occasionally emit explicit UTC (`Z`-suffixed) timestamps']
+    heart_rate_bpm integer [note: 'Heart rate in beats per minute recorded during this minute. Expected range 40-200 bpm']
+
+    indexes {
+        (participant_id, timestamp) [pk]
+    }
+
+    Note: '''
+    data/wearable_events/{participant_id}/heart_rate.json - array of per-minute heart-rate records,
+    on the same per-minute grid as steps.json. One file per participant; 40320 records per file (nominal).
+    Values track activity (correlated with steps bursts) and sleep stage (dips during deep/REM sleep).
+    Data quality: not every in-range value is trustworthy; a stuck optical sensor can repeat
+    its last reading for hours.
+    '''
+}
+
+Ref: sleep_sessions.(participant_id, date) - sleep.(participant_id, date)
+Ref: sleep_stages.(participant_id, date) > sleep_sessions.(participant_id, date)
+
+// ---------------------------------------------------------------------------
+// Consumption layer
+// ---------------------------------------------------------------------------
+
+Table dim_participant {
+    participant_id string [pk, ref: - participants.participant_id, note: 'Unique participant identifier']
+    device_id string [note: 'Fitbit device serial number']
+    age integer [note: 'Age in years at study enrolment']
+    height_cm integer [note: 'Height in centimetres']
+    gender string [note: '`male` or `female`']
+    chronotype string [note: 'Sleep chronotype: `A` = morning type, `B` = evening type']
+    max_heart_rate integer [note: 'Estimated maximum heart rate (bpm)']
+    wear_site string [note: 'Wrist placement: `wrist_dominant` or `wrist_nondominant`']
+    calibration_date date [note: 'Date the device was calibrated before deployment']
+    firmware_version string [note: 'Firmware version regex-parsed from `device_label`, so it is populated even where the source `firmware_version` is blank']
+
+    Note: 'Consumption dimension - participants joined to device_metadata, one row per participant'
+}
+
+Table daily_participant_summary {
+    participant_id string [ref: > dim_participant.participant_id, note: 'Participant identifier']
+    date date [note: 'Study day in local time (UTC-05:00). Sleep and survey are attributed to the wake-up / submission date']
+    study_week integer [note: 'Study week 1-4, anchored to the study start: floor((date - 2026-01-08) / 7) + 1. Roll-up key for the weekly table']
+
+    total_steps integer [note: 'Sum of `steps` over the day']
+    active_minutes integer [note: 'Minutes with `steps` > 0']
+    peak_steps_per_min integer [note: 'Highest single-minute step count of the day']
+    steps_minutes_recorded integer [note: 'Minute records present for the day (1440 nominal)']
+
+    hr_sum_bpm integer [note: 'Sum of `heart_rate_bpm` over valid minutes. Additive component for weekly averages']
+    hr_valid_minutes integer [note: 'Minutes with a trusted reading (in range, not flagged as stuck sensor). Additive component for weekly averages']
+    avg_hr_bpm float [note: '`hr_sum_bpm / hr_valid_minutes`']
+    min_hr_bpm integer [note: 'Lowest valid reading of the day']
+    max_hr_bpm integer [note: 'Highest valid reading of the day']
+    resting_hr_bpm float [note: 'Average valid heart rate during the sleep session that ends on `date`; null when there is no session']
+    hr_stuck_minutes integer [note: 'Minutes excluded because the sensor repeated its last reading (signal loss)']
+
+    sleep_onset timestamp [note: 'Timestamp when the participant fell asleep']
+    sleep_end timestamp [note: 'Timestamp when the participant woke up']
+    total_sleep_min integer [note: 'Sum of `duration_min` over non-awake stages']
+    deep_min integer [note: 'Minutes in `deep` stage']
+    rem_min integer [note: 'Minutes in `rem` stage']
+    light_min integer [note: 'Minutes in `light` stage']
+    awake_min integer [note: 'Minutes in `awake` stage']
+    deep_sleep_pct float [note: '`deep_min / total_sleep_min * 100`']
+    sleep_efficiency_pct float [note: '`total_sleep_min / (total_sleep_min + awake_min) * 100`, computed from the stages']
+    restlessness float [note: 'Session-level restlessness index (0-1)']
+
+    fatigue_score integer [note: 'Perceived fatigue level (1 = exhausted, 5 = fully rested)']
+    stress_score integer [note: 'Perceived stress level (1 = highly stressed, 5 = no stress)']
+    readiness_score integer [note: 'Readiness to train (0 = not ready, 10 = peak readiness)']
+    sleep_quality_score integer [note: 'Subjective sleep quality (1 = very poor, 5 = excellent)']
+
+    has_sleep boolean [note: 'A sleep session exists for this date']
+    has_survey boolean [note: 'A wellness survey was submitted for this date']
+
+    indexes {
+        (participant_id, date) [pk]
+        (participant_id, study_week)
+    }
+
+    Note: '''
+    Consumption table for daily batch consumers - one row per participant per study day.
+    Built from steps, heart_rate, sleep_sessions, sleep_stages and wellness_survey after cleaning
+    (timestamps normalised to UTC-05:00, stuck-sensor heart-rate readings excluded).
+    Each run overwrites the date partition and rebuilds the trailing days, so re-runs are safe.
+    Carries sums and counts as well as averages so the weekly table can be derived from it.
+    '''
+}
+
+Table weekly_participant_summary {
+    participant_id string [ref: > dim_participant.participant_id, note: 'Participant identifier']
+    study_week integer [note: 'Study week 1-4, anchored to the study start (2026-01-08)']
+    week_start date [note: 'First day of the study week (a Thursday)']
+    week_end date [note: 'Last day of the study week (a Wednesday)']
+
+    total_steps integer [note: 'Sum of daily `total_steps`']
+    avg_daily_steps float [note: '`total_steps / days_with_data`']
+    active_minutes integer [note: 'Sum of daily `active_minutes`']
+
+    avg_hr_bpm float [note: '`sum(hr_sum_bpm) / sum(hr_valid_minutes)` - weighted by valid minutes, not an average of daily averages']
+    min_hr_bpm integer [note: 'Minimum of daily `min_hr_bpm`']
+    max_hr_bpm integer [note: 'Maximum of daily `max_hr_bpm`']
+    avg_resting_hr_bpm float [note: 'Mean of daily `resting_hr_bpm` over nights recorded']
+
+    avg_total_sleep_min float [note: 'Mean of daily `total_sleep_min` over nights recorded']
+    avg_deep_sleep_pct float [note: '`sum(deep_min) / sum(total_sleep_min) * 100`']
+    avg_sleep_efficiency_pct float [note: '`sum(total_sleep_min) / sum(total_sleep_min + awake_min) * 100`']
+    nights_recorded integer [note: 'Days in the week with `has_sleep`']
+
+    avg_fatigue_score float [note: 'Mean over submitted surveys']
+    avg_stress_score float [note: 'Mean over submitted surveys']
+    avg_readiness_score float [note: 'Mean over submitted surveys']
+    avg_sleep_quality_score float [note: 'Mean over submitted surveys']
+    surveys_submitted integer [note: 'Days in the week with `has_survey`']
+
+    days_with_data integer [note: 'Days in the week with a daily row (0-7)']
+    is_complete_week boolean [note: 'All 7 days of the study week have been loaded']
+
+    indexes {
+        (participant_id, study_week) [pk]
+    }
+
+    Note: '''
+    Consumption table for weekly consumers - one row per participant per study week
+    (Thursday to Wednesday, four complete weeks over the 28-day study).
+    Derived only from daily_participant_summary; no minute-level source is re-read.
+    Medians and percentiles cannot be derived this way and need the minute-level tables.
+    '''
+}
+
+Ref: daily_participant_summary.(participant_id, study_week) > weekly_participant_summary.(participant_id, study_week)
+
+TableGroup consumption {
+    dim_participant
+    daily_participant_summary
+    weekly_participant_summary
+}
