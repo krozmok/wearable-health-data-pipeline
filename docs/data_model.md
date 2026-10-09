@@ -2,7 +2,7 @@
 
 Model for the PMData synthetic dataset: 50 participants, 28 days
 (2026-01-08 → 2026-02-04), study timezone UTC-05:00.
-Diagram: [diagrams/main_diagram.dbml](diagrams/main_diagram.dbml).
+Diagram: [modeling/main_model.dbml](modeling/main_model.dbml).
 Source field definitions: [../data_dictionary.md](../data_dictionary.md).
 
 ## Layers

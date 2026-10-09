@@ -1,195 +1,181 @@
-<mxfile host="app.diagrams.net" version="24.7.17">
+<mxfile>
   <diagram id="medallion" name="Medallion architecture">
-    <mxGraphModel dx="1600" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="940" math="0" shadow="0">
+    <mxGraphModel dx="2190" dy="912" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="940" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-
-        <mxCell id="title" value="PMData - proposed medallion architecture" style="text;html=1;align=left;verticalAlign=middle;fontSize=20;fontStyle=1;" vertex="1" parent="1">
-          <mxGeometry x="40" y="20" width="700" height="30" as="geometry" />
+        <mxCell id="title" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontSize=20;fontStyle=1;" value="PMData - proposed medallion architecture" vertex="1">
+          <mxGeometry height="30" width="700" x="40" y="20" as="geometry" />
         </mxCell>
-        <mxCell id="subtitle" value="Daily batch run by AWS Step Functions: Glue jobs land the sources in Bronze and clean them into Silver; dbt models Silver into the Gold tables." style="text;html=1;align=left;verticalAlign=middle;fontSize=12;fontColor=#555555;" vertex="1" parent="1">
-          <mxGeometry x="40" y="50" width="1000" height="20" as="geometry" />
+        <mxCell id="subtitle" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontSize=12;fontColor=#555555;" value="Daily batch run by AWS Step Functions: Glue jobs land the sources in Bronze and clean them into Silver; dbt models Silver into the Gold tables." vertex="1">
+          <mxGeometry height="20" width="1000" x="40" y="50" as="geometry" />
         </mxCell>
-
-        <!-- Sources -->
-        <mxCell id="src" value="Sources" style="swimlane;html=1;startSize=30;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontSize=14;fontStyle=1;rounded=1;swimlaneFillColor=#FFFFFF;" vertex="1" parent="1">
-          <mxGeometry x="40" y="90" width="230" height="560" as="geometry" />
+        <mxCell id="src" parent="1" style="swimlane;html=1;startSize=30;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontSize=14;fontStyle=1;rounded=1;swimlaneFillColor=#FFFFFF;" value="Sources" vertex="1">
+          <mxGeometry height="560" width="230" x="40" y="90" as="geometry" />
         </mxCell>
-        <mxCell id="src1" value="participants.csv" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;" vertex="1" parent="src">
-          <mxGeometry x="15" y="40" width="200" height="34" as="geometry" />
+        <mxCell id="src1" parent="src" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="participants.csv" vertex="1">
+          <mxGeometry height="34" width="200" x="15" y="40" as="geometry" />
         </mxCell>
-        <mxCell id="src2" value="device_metadata.csv" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;" vertex="1" parent="src">
-          <mxGeometry x="15" y="82" width="200" height="34" as="geometry" />
+        <mxCell id="src2" parent="src" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="device_metadata.csv" vertex="1">
+          <mxGeometry height="34" width="200" x="15" y="82" as="geometry" />
         </mxCell>
-        <mxCell id="src3" value="wellness_survey.csv" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;" vertex="1" parent="src">
-          <mxGeometry x="15" y="124" width="200" height="34" as="geometry" />
+        <mxCell id="src3" parent="src" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="wellness_survey.csv" vertex="1">
+          <mxGeometry height="34" width="200" x="15" y="124" as="geometry" />
         </mxCell>
-        <mxCell id="src4" value="{participant_id}/sleep.json" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;" vertex="1" parent="src">
-          <mxGeometry x="15" y="166" width="200" height="34" as="geometry" />
+        <mxCell id="src4" parent="src" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="{participant_id}/sleep.json" vertex="1">
+          <mxGeometry height="34" width="200" x="15" y="166" as="geometry" />
         </mxCell>
-        <mxCell id="src5" value="{participant_id}/steps.json" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;" vertex="1" parent="src">
-          <mxGeometry x="15" y="208" width="200" height="34" as="geometry" />
+        <mxCell id="src5" parent="src" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="{participant_id}/steps.json" vertex="1">
+          <mxGeometry height="34" width="200" x="15" y="208" as="geometry" />
         </mxCell>
-        <mxCell id="src6" value="{participant_id}/heart_rate.json" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;" vertex="1" parent="src">
-          <mxGeometry x="15" y="250" width="200" height="34" as="geometry" />
+        <mxCell id="src6" parent="src" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="{participant_id}/heart_rate.json" vertex="1">
+          <mxGeometry height="34" width="200" x="15" y="250" as="geometry" />
         </mxCell>
-        <mxCell id="srcNote" value="&lt;b&gt;Files as delivered&lt;/b&gt;&lt;br&gt;- 3 CSV files&lt;br&gt;- 3 JSON files per participant&lt;br&gt;- 50 participants, 28 study days" style="text;html=1;align=left;verticalAlign=top;whiteSpace=wrap;fontSize=11;spacing=4;" vertex="1" parent="src">
-          <mxGeometry x="15" y="345" width="200" height="200" as="geometry" />
+        <mxCell id="srcNote" parent="src" style="text;html=1;align=left;verticalAlign=top;whiteSpace=wrap;fontSize=11;spacing=4;" value="&lt;b&gt;Files as delivered&lt;/b&gt;&lt;br&gt;- 3 CSV files&lt;br&gt;- 3 JSON files per participant&lt;br&gt;- 50 participants, 28 study days" vertex="1">
+          <mxGeometry height="200" width="200" x="15" y="345" as="geometry" />
         </mxCell>
-
-        <!-- Bronze -->
-        <mxCell id="brz" value="Bronze - raw" style="swimlane;html=1;startSize=30;fillColor=#E6C9A8;strokeColor=#B5651D;fontSize=14;fontStyle=1;rounded=1;swimlaneFillColor=#FFFFFF;" vertex="1" parent="1">
-          <mxGeometry x="360" y="90" width="230" height="560" as="geometry" />
+        <mxCell id="brz" parent="1" style="swimlane;html=1;startSize=30;fillColor=#E6C9A8;strokeColor=#B5651D;fontSize=14;fontStyle=1;rounded=1;swimlaneFillColor=#FFFFFF;" value="Bronze - raw" vertex="1">
+          <mxGeometry height="560" width="230" x="360" y="90" as="geometry" />
         </mxCell>
-        <mxCell id="brz1" value="participants" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5E3CF;strokeColor=#B5651D;" vertex="1" parent="brz">
-          <mxGeometry x="15" y="40" width="200" height="34" as="geometry" />
+        <mxCell id="brz1" parent="brz" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5E3CF;strokeColor=#B5651D;" value="participants" vertex="1">
+          <mxGeometry height="34" width="200" x="15" y="40" as="geometry" />
         </mxCell>
-        <mxCell id="brz2" value="device_metadata" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5E3CF;strokeColor=#B5651D;" vertex="1" parent="brz">
-          <mxGeometry x="15" y="82" width="200" height="34" as="geometry" />
+        <mxCell id="brz2" parent="brz" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5E3CF;strokeColor=#B5651D;" value="device_metadata" vertex="1">
+          <mxGeometry height="34" width="200" x="15" y="82" as="geometry" />
         </mxCell>
-        <mxCell id="brz3" value="wellness_survey" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5E3CF;strokeColor=#B5651D;" vertex="1" parent="brz">
-          <mxGeometry x="15" y="124" width="200" height="34" as="geometry" />
+        <mxCell id="brz3" parent="brz" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5E3CF;strokeColor=#B5651D;" value="wellness_survey" vertex="1">
+          <mxGeometry height="34" width="200" x="15" y="124" as="geometry" />
         </mxCell>
-        <mxCell id="brz4" value="sleep (nested stages)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5E3CF;strokeColor=#B5651D;" vertex="1" parent="brz">
-          <mxGeometry x="15" y="166" width="200" height="34" as="geometry" />
+        <mxCell id="brz4" parent="brz" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5E3CF;strokeColor=#B5651D;" value="sleep (nested stages)" vertex="1">
+          <mxGeometry height="34" width="200" x="15" y="166" as="geometry" />
         </mxCell>
-        <mxCell id="brz5" value="steps" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5E3CF;strokeColor=#B5651D;" vertex="1" parent="brz">
-          <mxGeometry x="15" y="208" width="200" height="34" as="geometry" />
+        <mxCell id="brz5" parent="brz" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5E3CF;strokeColor=#B5651D;" value="steps" vertex="1">
+          <mxGeometry height="34" width="200" x="15" y="208" as="geometry" />
         </mxCell>
-        <mxCell id="brz6" value="heart_rate" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5E3CF;strokeColor=#B5651D;" vertex="1" parent="brz">
-          <mxGeometry x="15" y="250" width="200" height="34" as="geometry" />
+        <mxCell id="brz6" parent="brz" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5E3CF;strokeColor=#B5651D;" value="heart_rate" vertex="1">
+          <mxGeometry height="34" width="200" x="15" y="250" as="geometry" />
         </mxCell>
-        <mxCell id="brzNote" value="&lt;b&gt;Raw, as delivered&lt;/b&gt;&lt;br&gt;- One table per source file type&lt;br&gt;- Append-only, one load per daily batch&lt;br&gt;- No cleaning or type changes&lt;br&gt;- Adds load date and source file&lt;br&gt;- Kept so Silver can be rebuilt" style="text;html=1;align=left;verticalAlign=top;whiteSpace=wrap;fontSize=11;spacing=4;" vertex="1" parent="brz">
-          <mxGeometry x="15" y="345" width="200" height="200" as="geometry" />
+        <mxCell id="brzNote" parent="brz" style="text;html=1;align=left;verticalAlign=top;whiteSpace=wrap;fontSize=11;spacing=4;" value="&lt;b&gt;Raw, as delivered&lt;/b&gt;&lt;br&gt;- One table per source file type&lt;br&gt;- Append-only, one load per daily batch&lt;br&gt;- No cleaning or type changes&lt;br&gt;- Adds load date and source file&lt;br&gt;- Kept so Silver can be rebuilt" vertex="1">
+          <mxGeometry height="200" width="200" x="15" y="345" as="geometry" />
         </mxCell>
-
-        <!-- Silver -->
-        <mxCell id="slv" value="Silver - cleaned" style="swimlane;html=1;startSize=30;fillColor=#D9D9D9;strokeColor=#7F7F7F;fontSize=14;fontStyle=1;rounded=1;swimlaneFillColor=#FFFFFF;" vertex="1" parent="1">
-          <mxGeometry x="680" y="90" width="230" height="560" as="geometry" />
+        <mxCell id="slv" parent="1" style="swimlane;html=1;startSize=30;fillColor=#D9D9D9;strokeColor=#7F7F7F;fontSize=14;fontStyle=1;rounded=1;swimlaneFillColor=#FFFFFF;" value="Silver - cleaned" vertex="1">
+          <mxGeometry height="560" width="230" x="680" y="90" as="geometry" />
         </mxCell>
-        <mxCell id="slv1" value="participants" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F2F2F2;strokeColor=#7F7F7F;" vertex="1" parent="slv">
-          <mxGeometry x="15" y="40" width="200" height="34" as="geometry" />
+        <mxCell id="slv1" parent="slv" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F2F2F2;strokeColor=#7F7F7F;" value="participants" vertex="1">
+          <mxGeometry height="34" width="200" x="15" y="40" as="geometry" />
         </mxCell>
-        <mxCell id="slv2" value="device_metadata" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F2F2F2;strokeColor=#7F7F7F;" vertex="1" parent="slv">
-          <mxGeometry x="15" y="82" width="200" height="34" as="geometry" />
+        <mxCell id="slv2" parent="slv" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F2F2F2;strokeColor=#7F7F7F;" value="device_metadata" vertex="1">
+          <mxGeometry height="34" width="200" x="15" y="82" as="geometry" />
         </mxCell>
-        <mxCell id="slv3" value="wellness_survey" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F2F2F2;strokeColor=#7F7F7F;" vertex="1" parent="slv">
-          <mxGeometry x="15" y="124" width="200" height="34" as="geometry" />
+        <mxCell id="slv3" parent="slv" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F2F2F2;strokeColor=#7F7F7F;" value="wellness_survey" vertex="1">
+          <mxGeometry height="34" width="200" x="15" y="124" as="geometry" />
         </mxCell>
-        <mxCell id="slv4" value="sleep_sessions" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F2F2F2;strokeColor=#7F7F7F;" vertex="1" parent="slv">
-          <mxGeometry x="15" y="166" width="200" height="34" as="geometry" />
+        <mxCell id="slv4" parent="slv" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F2F2F2;strokeColor=#7F7F7F;" value="sleep_sessions" vertex="1">
+          <mxGeometry height="34" width="200" x="15" y="166" as="geometry" />
         </mxCell>
-        <mxCell id="slv5" value="sleep_stages" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F2F2F2;strokeColor=#7F7F7F;" vertex="1" parent="slv">
-          <mxGeometry x="15" y="208" width="200" height="34" as="geometry" />
+        <mxCell id="slv5" parent="slv" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F2F2F2;strokeColor=#7F7F7F;" value="sleep_stages" vertex="1">
+          <mxGeometry height="34" width="200" x="15" y="208" as="geometry" />
         </mxCell>
-        <mxCell id="slv6" value="steps" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F2F2F2;strokeColor=#7F7F7F;" vertex="1" parent="slv">
-          <mxGeometry x="15" y="250" width="200" height="34" as="geometry" />
+        <mxCell id="slv6" parent="slv" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F2F2F2;strokeColor=#7F7F7F;" value="steps" vertex="1">
+          <mxGeometry height="34" width="200" x="15" y="250" as="geometry" />
         </mxCell>
-        <mxCell id="slv7" value="heart_rate" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F2F2F2;strokeColor=#7F7F7F;" vertex="1" parent="slv">
-          <mxGeometry x="15" y="292" width="200" height="34" as="geometry" />
+        <mxCell id="slv7" parent="slv" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F2F2F2;strokeColor=#7F7F7F;" value="heart_rate" vertex="1">
+          <mxGeometry height="34" width="200" x="15" y="292" as="geometry" />
         </mxCell>
-        <mxCell id="slvNote" value="&lt;b&gt;Cleaned and conformed&lt;/b&gt;&lt;br&gt;- Typed and de-duplicated&lt;br&gt;- Keys enforced at the stated grain&lt;br&gt;- Timestamps normalised to UTC-05:00&lt;br&gt;- Stuck-sensor heart-rate readings flagged&lt;br&gt;- sleep flattened into sessions and stages&lt;br&gt;- Firmware parsed from device_label" style="text;html=1;align=left;verticalAlign=top;whiteSpace=wrap;fontSize=11;spacing=4;" vertex="1" parent="slv">
-          <mxGeometry x="15" y="345" width="200" height="200" as="geometry" />
+        <mxCell id="slvNote" parent="slv" style="text;html=1;align=left;verticalAlign=top;whiteSpace=wrap;fontSize=11;spacing=4;" value="&lt;b&gt;Cleaned and conformed&lt;/b&gt;&lt;br&gt;- Typed and de-duplicated&lt;br&gt;- Keys enforced at the stated grain&lt;br&gt;- Timestamps normalised to UTC-05:00&lt;br&gt;- Stuck-sensor heart-rate readings flagged&lt;br&gt;- sleep flattened into sessions and stages&lt;br&gt;- Firmware parsed from device_label" vertex="1">
+          <mxGeometry height="200" width="200" x="15" y="345" as="geometry" />
         </mxCell>
-
-        <!-- Gold -->
-        <mxCell id="gld" value="Gold - consumption" style="swimlane;html=1;startSize=30;fillColor=#FFE599;strokeColor=#D6B656;fontSize=14;fontStyle=1;rounded=1;swimlaneFillColor=#FFFFFF;" vertex="1" parent="1">
-          <mxGeometry x="1000" y="90" width="230" height="560" as="geometry" />
+        <mxCell id="gld" parent="1" style="swimlane;html=1;startSize=30;fillColor=#FFE599;strokeColor=#D6B656;fontSize=14;fontStyle=1;rounded=1;swimlaneFillColor=#FFFFFF;" value="Gold - consumption" vertex="1">
+          <mxGeometry height="560" width="230" x="1000" y="90" as="geometry" />
         </mxCell>
-        <mxCell id="gld1" value="dim_participant" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;" vertex="1" parent="gld">
-          <mxGeometry x="15" y="40" width="200" height="50" as="geometry" />
+        <mxCell id="gld1" parent="gld" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;" value="dim_participant" vertex="1">
+          <mxGeometry height="50" width="200" x="15" y="40" as="geometry" />
         </mxCell>
-        <mxCell id="gld2" value="daily_participant_summary" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;fontStyle=1;" vertex="1" parent="gld">
-          <mxGeometry x="15" y="124" width="200" height="50" as="geometry" />
+        <mxCell id="gld2" parent="gld" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;fontStyle=1;" value="daily_participant_summary" vertex="1">
+          <mxGeometry height="50" width="200" x="15" y="124" as="geometry" />
         </mxCell>
-        <mxCell id="gld3" value="weekly_participant_summary" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;fontStyle=1;" vertex="1" parent="gld">
-          <mxGeometry x="15" y="250" width="200" height="50" as="geometry" />
+        <mxCell id="gld3" parent="gld" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;fontStyle=1;" value="weekly_participant_summary" vertex="1">
+          <mxGeometry height="50" width="200" x="15" y="250" as="geometry" />
         </mxCell>
-        <mxCell id="gldRoll" value="dbt weekly: roll up by study week" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#B8860B;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="gld" source="gld2" target="gld3">
+        <mxCell id="gldRoll" edge="1" parent="gld" source="gld2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#B8860B;fontSize=11;labelBackgroundColor=#FFFFFF;" target="gld3" value="dbt weekly: roll up by study week">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="gldNote" value="&lt;b&gt;Ready to use&lt;/b&gt;&lt;br&gt;- One wide daily row per participant&lt;br&gt;- Daily partition overwritten per run&lt;br&gt;- Weekly derived only from daily&lt;br&gt;- Study weeks run Thursday to Wednesday&lt;br&gt;- dim_participant joins to both" style="text;html=1;align=left;verticalAlign=top;whiteSpace=wrap;fontSize=11;spacing=4;" vertex="1" parent="gld">
-          <mxGeometry x="15" y="345" width="200" height="200" as="geometry" />
+        <mxCell id="gldNote" parent="gld" style="text;html=1;align=left;verticalAlign=top;whiteSpace=wrap;fontSize=11;spacing=4;" value="&lt;b&gt;Ready to use&lt;/b&gt;&lt;br&gt;- One wide daily row per participant&lt;br&gt;- Daily partition overwritten per run&lt;br&gt;- Weekly derived only from daily&lt;br&gt;- Study weeks run Thursday to Wednesday&lt;br&gt;- dim_participant joins to both" vertex="1">
+          <mxGeometry height="200" width="200" x="15" y="345" as="geometry" />
         </mxCell>
-
-        <!-- Consumers -->
-        <mxCell id="con" value="Consumers" style="swimlane;html=1;startSize=30;fillColor=#D5E8D4;strokeColor=#82B366;fontSize=14;fontStyle=1;rounded=1;swimlaneFillColor=#FFFFFF;" vertex="1" parent="1">
-          <mxGeometry x="1320" y="90" width="230" height="560" as="geometry" />
+        <mxCell id="con" parent="1" style="swimlane;html=1;startSize=30;fillColor=#D5E8D4;strokeColor=#82B366;fontSize=14;fontStyle=1;rounded=1;swimlaneFillColor=#FFFFFF;" value="Consumers" vertex="1">
+          <mxGeometry height="560" width="230" x="1320" y="90" as="geometry" />
         </mxCell>
-        <mxCell id="con1" value="Daily batch teams" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;" vertex="1" parent="con">
-          <mxGeometry x="15" y="124" width="200" height="50" as="geometry" />
+        <mxCell id="con1" parent="con" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;" value="Daily batch teams" vertex="1">
+          <mxGeometry height="50" width="200" x="15" y="124" as="geometry" />
         </mxCell>
-        <mxCell id="con2" value="Weekly teams" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;" vertex="1" parent="con">
-          <mxGeometry x="15" y="250" width="200" height="50" as="geometry" />
+        <mxCell id="con2" parent="con" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;" value="Weekly teams" vertex="1">
+          <mxGeometry height="50" width="200" x="15" y="250" as="geometry" />
         </mxCell>
-        <mxCell id="conNote" value="&lt;b&gt;Read Gold only&lt;/b&gt;&lt;br&gt;- Daily teams pick up yesterday&#39;s partition after each run&lt;br&gt;- Weekly teams read closed study weeks (is_complete_week)" style="text;html=1;align=left;verticalAlign=top;whiteSpace=wrap;fontSize=11;spacing=4;" vertex="1" parent="con">
-          <mxGeometry x="15" y="345" width="200" height="200" as="geometry" />
+        <mxCell id="conNote" parent="con" style="text;html=1;align=left;verticalAlign=top;whiteSpace=wrap;fontSize=11;spacing=4;" value="&lt;b&gt;Read Gold only&lt;/b&gt;&lt;br&gt;- Daily teams pick up yesterday&#39;s partition after each run&lt;br&gt;- Weekly teams read closed study weeks (is_complete_week)" vertex="1">
+          <mxGeometry height="200" width="200" x="15" y="345" as="geometry" />
         </mxCell>
-
-        <!-- Layer-to-layer flows -->
-        <mxCell id="e1" value="Glue job&lt;br&gt;ingest" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#555555;fontSize=11;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.3;exitDx=0;exitDy=0;entryX=0;entryY=0.3;entryDx=0;entryDy=0;" edge="1" parent="1" source="src" target="brz">
+        <mxCell id="e1" edge="1" parent="1" source="src" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#555555;fontSize=11;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.3;exitDx=0;exitDy=0;entryX=0;entryY=0.3;entryDx=0;entryDy=0;" target="brz" value="Glue job&lt;br&gt;ingest">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="e2" value="Glue job&lt;br&gt;clean" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#555555;fontSize=11;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.3;exitDx=0;exitDy=0;entryX=0;entryY=0.3;entryDx=0;entryDy=0;" edge="1" parent="1" source="brz" target="slv">
+        <mxCell id="e2" edge="1" parent="1" source="brz" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#555555;fontSize=11;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.3;exitDx=0;exitDy=0;entryX=0;entryY=0.3;entryDx=0;entryDy=0;" target="slv" value="Glue job&lt;br&gt;clean">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="e3" value="dbt&lt;br&gt;daily" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#555555;fontSize=11;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.3;exitDx=0;exitDy=0;entryX=0;entryY=0.3;entryDx=0;entryDy=0;" edge="1" parent="1" source="slv" target="gld">
+        <mxCell id="e3" edge="1" parent="1" source="slv" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#555555;fontSize=11;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.3;exitDx=0;exitDy=0;entryX=0;entryY=0.3;entryDx=0;entryDy=0;" target="gld" value="dbt&lt;br&gt;daily">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="e4" value="daily" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#555555;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="gld2" target="con1">
+        <mxCell id="e4" edge="1" parent="1" source="gld2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#555555;fontSize=11;labelBackgroundColor=#FFFFFF;" target="con1" value="daily">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="e5" value="weekly" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#555555;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="gld3" target="con2">
+        <mxCell id="e5" edge="1" parent="1" source="gld3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#555555;fontSize=11;labelBackgroundColor=#FFFFFF;" target="con2" value="weekly">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <!-- Orchestration -->
-        <mxCell id="orc" value="AWS Step Functions - daily state machine" style="swimlane;html=1;startSize=30;fillColor=#F8CECC;strokeColor=#C2185B;fontSize=14;fontStyle=1;rounded=1;swimlaneFillColor=#FFFFFF;" vertex="1" parent="1">
-          <mxGeometry x="40" y="680" width="1510" height="210" as="geometry" />
+        <mxCell id="orc" parent="1" style="swimlane;html=1;startSize=30;fillColor=#F8CECC;strokeColor=#C2185B;fontSize=14;fontStyle=1;rounded=1;swimlaneFillColor=#FFFFFF;" value="AWS Step Functions - daily state machine" vertex="1">
+          <mxGeometry height="210" width="1510" x="40" y="680" as="geometry" />
         </mxCell>
-        <mxCell id="orc0" value="Daily schedule" style="ellipse;whiteSpace=wrap;html=1;fillColor=#F8CECC;strokeColor=#C2185B;" vertex="1" parent="orc">
-          <mxGeometry x="20" y="55" width="110" height="60" as="geometry" />
+        <mxCell id="orc0" parent="orc" style="ellipse;whiteSpace=wrap;html=1;fillColor=#F8CECC;strokeColor=#C2185B;" value="Daily schedule" vertex="1">
+          <mxGeometry height="60" width="110" x="20" y="55" as="geometry" />
         </mxCell>
-        <mxCell id="orc1" value="&lt;b&gt;1. AWS Glue job&lt;/b&gt;&lt;br&gt;Land source files in Bronze as-is" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;fontSize=11;" vertex="1" parent="orc">
-          <mxGeometry x="165" y="50" width="170" height="70" as="geometry" />
+        <mxCell id="orc1" parent="orc" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;fontSize=11;" value="&lt;b&gt;1. AWS Glue job&lt;/b&gt;&lt;br&gt;Land source files in Bronze as-is" vertex="1">
+          <mxGeometry height="70" width="170" x="165" y="50" as="geometry" />
         </mxCell>
-        <mxCell id="orc2" value="&lt;b&gt;2. AWS Glue job&lt;/b&gt;&lt;br&gt;Clean, type and flatten Bronze into Silver" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;fontSize=11;" vertex="1" parent="orc">
-          <mxGeometry x="370" y="50" width="170" height="70" as="geometry" />
+        <mxCell id="orc2" parent="orc" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;fontSize=11;" value="&lt;b&gt;2. AWS Glue job&lt;/b&gt;&lt;br&gt;Clean, type and flatten Bronze into Silver" vertex="1">
+          <mxGeometry height="70" width="170" x="370" y="50" as="geometry" />
         </mxCell>
-        <mxCell id="orc3" value="&lt;b&gt;3. dbt build - daily&lt;/b&gt;&lt;br&gt;--select tag:daily&lt;br&gt;dim_participant and daily_participant_summary, with tests" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFE0CC;strokeColor=#FF694B;fontSize=11;" vertex="1" parent="orc">
-          <mxGeometry x="575" y="45" width="200" height="80" as="geometry" />
+        <mxCell id="orc3" parent="orc" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFE0CC;strokeColor=#FF694B;fontSize=11;" value="&lt;b&gt;3. dbt build - daily&lt;/b&gt;&lt;br&gt;--select tag:daily&lt;br&gt;dim_participant and daily_participant_summary, with tests" vertex="1">
+          <mxGeometry height="80" width="200" x="575" y="45" as="geometry" />
         </mxCell>
-        <mxCell id="orcC" value="Study week&lt;br&gt;closed?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#F8CECC;strokeColor=#C2185B;fontSize=11;" vertex="1" parent="orc">
-          <mxGeometry x="815" y="40" width="130" height="90" as="geometry" />
+        <mxCell id="orcC" parent="orc" style="rhombus;whiteSpace=wrap;html=1;fillColor=#F8CECC;strokeColor=#C2185B;fontSize=11;" value="Study week&lt;br&gt;closed?" vertex="1">
+          <mxGeometry height="90" width="130" x="815" y="40" as="geometry" />
         </mxCell>
-        <mxCell id="orc5" value="&lt;b&gt;4. dbt build - weekly&lt;/b&gt;&lt;br&gt;--select tag:weekly&lt;br&gt;weekly_participant_summary from the daily table, with tests" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFE0CC;strokeColor=#FF694B;fontSize=11;" vertex="1" parent="orc">
-          <mxGeometry x="1000" y="45" width="200" height="80" as="geometry" />
+        <mxCell id="orc5" parent="orc" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFE0CC;strokeColor=#FF694B;fontSize=11;" value="&lt;b&gt;4. dbt build - weekly&lt;/b&gt;&lt;br&gt;--select tag:weekly&lt;br&gt;weekly_participant_summary from the daily table, with tests" vertex="1">
+          <mxGeometry height="80" width="200" x="1000" y="45" as="geometry" />
         </mxCell>
-        <mxCell id="orc4" value="Gold published" style="ellipse;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;" vertex="1" parent="orc">
-          <mxGeometry x="1250" y="55" width="110" height="60" as="geometry" />
+        <mxCell id="orc4" parent="orc" style="ellipse;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;" value="Gold published" vertex="1">
+          <mxGeometry height="60" width="110" x="1250" y="55" as="geometry" />
         </mxCell>
-        <mxCell id="orcNote" value="Each step starts only when the previous one succeeds; a failed step stops the run, so Gold keeps the last good data. The weekly build runs only on the day a study week closes (Wednesday data loaded)." style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=11;spacing=4;" vertex="1" parent="orc">
-          <mxGeometry x="20" y="165" width="780" height="35" as="geometry" />
+        <mxCell id="orcNote" parent="orc" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=11;spacing=4;" value="Each step starts only when the previous one succeeds; a failed step stops the run, so Gold keeps the last good data. The weekly build runs only on the day a study week closes (Wednesday data loaded)." vertex="1">
+          <mxGeometry height="35" width="780" x="20" y="165" as="geometry" />
         </mxCell>
-        <mxCell id="orcE0" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#C2185B;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="orc" source="orc0" target="orc1">
+        <mxCell id="orcE0" edge="1" parent="orc" source="orc0" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#C2185B;fontSize=11;labelBackgroundColor=#FFFFFF;" target="orc1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="orcE1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#C2185B;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="orc" source="orc1" target="orc2">
+        <mxCell id="orcE1" edge="1" parent="orc" source="orc1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#C2185B;fontSize=11;labelBackgroundColor=#FFFFFF;" target="orc2">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="orcE2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#C2185B;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="orc" source="orc2" target="orc3">
+        <mxCell id="orcE2" edge="1" parent="orc" source="orc2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#C2185B;fontSize=11;labelBackgroundColor=#FFFFFF;" target="orc3">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="orcE3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#C2185B;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="orc" source="orc3" target="orcC">
+        <mxCell id="orcE3" edge="1" parent="orc" source="orc3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#C2185B;fontSize=11;labelBackgroundColor=#FFFFFF;" target="orcC">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="orcE4" value="Yes" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#C2185B;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="orc" source="orcC" target="orc5">
+        <mxCell id="orcE4" edge="1" parent="orc" source="orcC" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#C2185B;fontSize=11;labelBackgroundColor=#FFFFFF;" target="orc5" value="Yes">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="orcE5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#C2185B;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="orc" source="orc5" target="orc4">
+        <mxCell id="orcE5" edge="1" parent="orc" source="orc5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#C2185B;fontSize=11;labelBackgroundColor=#FFFFFF;" target="orc4">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="orcE6" value="No" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#C2185B;fontSize=11;labelBackgroundColor=#FFFFFF;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="orc" source="orcC" target="orc4">
+        <mxCell id="orcE6" edge="1" parent="orc" source="orcC" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#C2185B;fontSize=11;labelBackgroundColor=#FFFFFF;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="orc4" value="No">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="880" y="150" />
